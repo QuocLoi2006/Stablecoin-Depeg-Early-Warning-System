@@ -1,0 +1,27 @@
+﻿source,key,endpoint,status,rows,first_date,last_date,fetched_at_utc,error,note
+Yahoo Finance,USDT:USDT-USD,yfinance.download(interval=1d),ok,2481,2020-01-01,2026-10-16,2026-10-19 14:00:12,,
+CryptoCompare,USDT:USDT,min-api.cryptocompare.com/data/v2/histoday,error,0,,,2026-10-19 14:00:15,HTTPError: 401 Client Error: Unauthorized for url: https://min-api.cryptocompare.com/data/v2/histoday?fsym=USDT&tsym=USD&limit=2000&toTs=1792195200,
+DefiLlama,USDT:USDT,stablecoins.llama.fi/stablecoin/{id},ok,3247,2017-11-29,2026-10-19,2026-10-19 14:00:16,,"Tether (USDT, id=1)"
+Yahoo Finance,USDC:USDC-USD,yfinance.download(interval=1d),ok,2481,2020-01-01,2026-10-16,2026-10-19 14:00:19,,
+CryptoCompare,USDC:USDC,min-api.cryptocompare.com/data/v2/histoday,error,0,,,2026-10-19 14:00:20,HTTPError: 401 Client Error: Unauthorized for url: https://min-api.cryptocompare.com/data/v2/histoday?fsym=USDC&tsym=USD&limit=2000&toTs=1792195200,
+Binance,USDC:USDCUSDT,api.binance.com/api/v3/klines (1d),ok,2316,2020-01-01,2026-10-16,2026-10-19 14:00:20,,
+DefiLlama,USDC:USDC,stablecoins.llama.fi/stablecoin/{id},ok,2961,2018-09-11,2026-10-19,2026-10-19 14:00:21,,"USD Coin (USDC, id=2)"
+Yahoo Finance,DAI:DAI-USD,yfinance.download(interval=1d),ok,2481,2020-01-01,2026-10-16,2026-10-19 14:00:24,,
+CryptoCompare,DAI:DAI,min-api.cryptocompare.com/data/v2/histoday,error,0,,,2026-10-19 14:00:25,HTTPError: 401 Client Error: Unauthorized for url: https://min-api.cryptocompare.com/data/v2/histoday?fsym=DAI&tsym=USD&limit=2000&toTs=1792195200,
+Binance,DAI:DAIUSDT,api.binance.com/api/v3/klines (1d),ok,21,2020-07-23,2020-08-12,2026-10-19 14:00:25,,
+DefiLlama,DAI:DAI,stablecoins.llama.fi/stablecoin/{id},ok,2527,2019-11-19,2026-10-19,2026-10-19 14:00:25,,"Dai (DAI, id=5)"
+Yahoo Finance,BUSD:BUSD-USD,yfinance.download(interval=1d),ok,2481,2020-01-01,2026-10-16,2026-10-19 14:00:28,,
+CryptoCompare,BUSD:BUSD,min-api.cryptocompare.com/data/v2/histoday,error,0,,,2026-10-19 14:00:28,HTTPError: 401 Client Error: Unauthorized for url: https://min-api.cryptocompare.com/data/v2/histoday?fsym=BUSD&tsym=USD&limit=2000&toTs=1792195200,
+Binance,BUSD:BUSDUSDT,api.binance.com/api/v3/klines (1d),ok,1445,2020-01-01,2023-12-15,2026-10-19 14:00:29,,
+DefiLlama,BUSD:BUSD,stablecoins.llama.fi/stablecoin/{id},ok,2371,2020-04-17,2026-10-19,2026-10-19 14:00:29,,"Binance USD (BUSD, id=4)"
+Yahoo Finance,FDUSD:FDUSD-USD,yfinance.download(interval=1d),ok,1176,2023-07-26,2026-10-16,2026-10-19 14:00:32,,
+CryptoCompare,FDUSD:FDUSD,min-api.cryptocompare.com/data/v2/histoday,error,0,,,2026-10-19 14:00:32,HTTPError: 401 Client Error: Unauthorized for url: https://min-api.cryptocompare.com/data/v2/histoday?fsym=FDUSD&tsym=USD&limit=2000&toTs=1792195200,
+Binance,FDUSD:FDUSDUSDT,api.binance.com/api/v3/klines (1d),ok,1179,2023-07-26,2026-10-16,2026-10-19 14:00:33,,
+DefiLlama,FDUSD:FDUSD,stablecoins.llama.fi/stablecoin/{id},ok,1242,2023-05-27,2026-10-19,2026-10-19 14:00:33,,"First Digital USD (FDUSD, id=119)"
+Yahoo Finance,UST:UST-USD,yfinance.download(interval=1d),empty,0,,,2026-10-19 14:00:35,,
+CryptoCompare,UST:UST,min-api.cryptocompare.com/data/v2/histoday,error,0,,,2026-10-19 14:00:36,HTTPError: 401 Client Error: Unauthorized for url: https://min-api.cryptocompare.com/data/v2/histoday?fsym=UST&tsym=USD&limit=2000&toTs=1792195200,
+Binance,UST:USTUSDT,api.binance.com/api/v3/klines (1d),ok,141,2021-12-24,2022-05-13,2026-10-19 14:00:37,,
+DefiLlama,UST:UST,stablecoins.llama.fi/stablecoin/{id},ok,539,2020-12-31,2022-06-22,2026-10-19 14:00:37,,"TerraClassicUSD (USTC, id=3)"
+Yahoo Finance,BTC:BTC-USD,yfinance.download(interval=1d),ok,2511,2019-12-02,2026-10-16,2026-10-19 14:00:39,,
+Yahoo Finance,ETH:ETH-USD,yfinance.download(interval=1d),ok,2511,2019-12-02,2026-10-16,2026-10-19 14:00:39,,
+DefiLlama,TVL:all_chains,api.llama.fi/v2/historicalChainTvl,ok,3310,2017-09-27,2026-10-19,2026-10-19 14:00:40,,

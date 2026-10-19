@@ -1,0 +1,37 @@
+# Cấu hình pipeline Code 1 — Stablecoin Depeg Early-Warning (Nhóm 4)
+sample:
+  start: "2020-01-01"     # blueprint: stress episodes 2020–2026
+  # Ngày cuối ĐÓNG BĂNG để panel tái lập được và mọi nguồn đều đã có dữ liệu (Yahoo trễ ~1 ngày).
+  # Khi chốt v1 (cuối 19/10): đặt = ngày UTC gần nhất mà Yahoo và DefiLlama đều đã có dữ liệu.
+  # null => hôm qua (UTC), KHÔNG khuyến nghị vì panel đổi mỗi lần chạy.
+  end: "2026-10-16"
+
+# Số ngày làm trễ cho dữ liệu DefiLlama (supply, TVL) khi đưa vào panel.
+# 1 = an toàn tuyệt đối chống look-ahead (hàng t chỉ dùng giá trị gắn nhãn <= t-1).
+# Đặt 0 nếu nhóm xác nhận DefiLlama chụp số liệu tại 00:00 UTC của chính ngày đó.
+llama_lag_days: 1
+llama_ffill_limit: 3      # chỉ ffill tối đa 3 ngày, có cờ supply_ffilled
+
+cryptocompare_api_key_env: CRYPTOCOMPARE_API_KEY   # key miễn phí, đặt trong biến môi trường
+
+# role: core | extension | case_study (theo mục 3.1 của blueprint)
+coins:
+  USDT:  {role: core,       type: fiat_backed,   yahoo: USDT-USD,  cc: USDT,  binance: null,       llama_symbol: USDT,  llama_name: Tether}
+  USDC:  {role: core,       type: fiat_backed,   yahoo: USDC-USD,  cc: USDC,  binance: USDCUSDT,   llama_symbol: USDC,  llama_name: USD Coin}
+  DAI:   {role: core,       type: crypto_backed, yahoo: DAI-USD,   cc: DAI,   binance: DAIUSDT,    llama_symbol: DAI,   llama_name: Dai}
+  BUSD:  {role: extension,  type: fiat_backed,   yahoo: BUSD-USD,  cc: BUSD,  binance: BUSDUSDT,   llama_symbol: BUSD,  llama_name: Binance USD}
+  FDUSD: {role: extension,  type: fiat_backed,   yahoo: FDUSD-USD, cc: FDUSD, binance: FDUSDUSDT,  llama_symbol: FDUSD, llama_name: First Digital USD}
+  UST:   {role: case_study, type: algorithmic,   yahoo: UST-USD,   cc: UST,   binance: USTUSDT,    llama_symbol: UST,   llama_name: TerraUSD, llama_alt: [terra], binance_fallback: true, last_valid_date: "2022-05-31"}
+
+market:
+  btc_yahoo: BTC-USD
+  eth_yahoo: ETH-USD
+  vol_window: 7
+  warmup_days: 30         # tải BTC/ETH sớm hơn start 30 ngày để btc_vol không NaN ở đầu mẫu
+
+# Dữ liệu on-chain tùy chọn (xuất từ Dune, xem src/data/dune_queries.sql). Thiếu file => cột = NaN + cờ.
+onchain:
+  curve3pool_csv: data/raw/onchain/curve3pool_net_transfers.csv
+  mintburn_csv: data/raw/onchain/mint_burn_eth.csv
+  # Số dư pool lấy từ API Curve (fetch_curve.py): hàng t chỉ dùng số dư gắn nhãn <= t - lag. 1 = bảo thủ (chưa rõ mốc cắt snapshot).
+  curve_balances_lag_days: 1

@@ -1,0 +1,17 @@
+﻿check,status,detail
+"khóa (stablecoin, timestamp) duy nhất",PASS,
+timestamp có múi giờ UTC,PASS,UTC
+timestamp đúng 00:00 UTC,PASS,
+không có ngày chưa đóng (>= hôm nay UTC),PASS,max=2026-10-16 00:00:00+00:00
+lưới ngày liên tục trong từng coin (cần cho shift(-h) của nhãn),PASS,
+giá dương và <= 5 USD (ngoài khoảng = lỗi dữ liệu),PASS,0 quan sát
+"giá ngoài [0.5, 1.5] (thường là depeg thật, cần xem tay và ghi vào bảng sự kiện)",WARN,2 quan sát: UST 2022-05-12 0.3635 (binance_usdt); UST 2022-05-13 0.2458 (binance_usdt)
+high >= low,PASS,
+peg_deviation >= 0,PASS,
+"biến cấp thị trường (BTC/ETH, TVL) giống hệt nhau giữa các coin trong cùng ngày",PASS,"0 ngày khác giá trị, 0 ngày NaN lẫn không NaN"
+supply không âm,PASS,
+Yahoo vs CryptoCompare lệch > 0.5%,WARN,KHÔNG có dữ liệu CryptoCompare nên chưa đối chiếu được (kiểm tra API key)
+mọi coin đều có đối chiếu độc lập với CryptoCompare,WARN,"BUSD, DAI, FDUSD, USDC, USDT, UST"
+không nghi dữ liệu cũ/đứng giá (giá giống nhau >= 20 ngày hoặc volume=0 > 20%),PASS,
+cơ cấu nguồn giá (price_src),INFO,"{'yahoo': 11100, 'binance_usdt': 141}"
+tỷ lệ hàng có biến on-chain trực tiếp,INFO,0.0% (phần còn lại dùng proxy DefiLlama)

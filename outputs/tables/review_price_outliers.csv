@@ -1,0 +1,3 @@
+﻿stablecoin,timestamp,price,high,low,peg_deviation,price_src,bn_close
+UST,2022-05-12 00:00:00+00:00,0.363505,0.789,0.26659,0.636495,binance_usdt,0.363505
+UST,2022-05-13 00:00:00+00:00,0.245779,0.389998,0.240002,0.754221,binance_usdt,0.245779

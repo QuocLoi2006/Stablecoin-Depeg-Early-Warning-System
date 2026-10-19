@@ -1,0 +1,45 @@
+﻿column,dtype,unit,definition,source,timing,blueprint
+timestamp,"datetime64[ns, UTC]",UTC 00:00,Ngày (UTC) của quan sát; khóa cùng với stablecoin.,Pipeline,Hàng t phản ánh thông tin biết được đến hết ngày t (24:00 UTC).,timestamp
+stablecoin,string,-,"Mã stablecoin (USDT, USDC, DAI, BUSD, FDUSD, UST).",config.yaml,-,stablecoin
+role,string,-,Vai trò trong mẫu: core / extension / case_study (mục 3.1 của đề).,config.yaml,-,
+coin_type,string,-,Loại: fiat_backed / crypto_backed / algorithmic (dùng cho RQ3).,config.yaml,-,
+price,float64,USD,Giá đóng cửa ngày. Ưu tiên Yahoo; thiếu thì lấy CryptoCompare (xem price_src).,Yahoo Finance / CryptoCompare,Close của nến ngày t (đến 24:00 UTC).,price
+open,float64,USD,Giá mở cửa ngày (00:00 UTC).,như price,Biết tại 00:00 ngày t.,
+high,float64,USD,"Giá cao nhất trong ngày; đã chỉnh để >= max(open, close) (xem hl_fixed).",như price,Biết đến hết ngày t.,
+low,float64,USD,"Giá thấp nhất trong ngày; đã chỉnh để <= min(open, close).",như price,Biết đến hết ngày t.,
+peg_dev_signed,float64,USD,price - 1 (có dấu: âm = dưới neo).,Tính,Dùng price ngày t.,
+peg_deviation,float64,USD (tỷ lệ),Dev = |price - 1| theo giá đóng cửa.,Tính,Dùng price ngày t.,peg_deviation
+peg_deviation_cc,float64,USD (tỷ lệ),|cc_close - 1|: độ lệch theo giá đóng cửa CryptoCompare (nguồn độc lập với Yahoo). NaN nếu thiếu CryptoCompare.,CryptoCompare,Close ngày t.,robustness
+peg_deviation_min,float64,USD (tỷ lệ),"min(peg_deviation, peg_deviation_cc): chỉ lớn khi CẢ HAI nguồn cùng thấy lệch. Dùng tạo nhãn 'bảo thủ' để kiểm tra độ nhạy; nếu thiếu CryptoCompare thì bằng peg_deviation.",Tính,Close ngày t.,robustness
+peg_deviation_hl,float64,USD (tỷ lệ),"Độ lệch trong ngày xấu nhất: max(|high-1|, |low-1|). Bắt depeg chỉ xảy ra trong ngày.",Tính,Dùng high/low ngày t.,
+peg_deviation_hl_cc,float64,USD (tỷ lệ),"max(|cc_high-1|, |cc_low-1|): độ lệch trong ngày theo High/Low CryptoCompare. NaN nếu thiếu CryptoCompare.",CryptoCompare,Cả ngày t.,robustness
+peg_deviation_hl_min,float64,USD (tỷ lệ),"min(peg_deviation_hl, peg_deviation_hl_cc): chỉ lớn khi cả hai nguồn cùng thấy lệch trong ngày. Khuyến nghị dùng cho nhãn chính vì High/Low của Yahoo bị nhiễu giai đoạn 2020–đầu 2021.",Tính,Cả ngày t.,robustness
+volume,float64,USD,Khối lượng giao dịch ngày quy USD.,như price,Cả ngày t.,
+range_hl,float64,tỷ lệ,(high - low) / close. Proxy biến động/căng thẳng thanh khoản trong ngày.,Tính,Cả ngày t.,
+turnover,float64,tỷ lệ,volume / supply. Proxy thanh khoản (không có bid-ask spread lịch sử miễn phí).,Tính,supply đã trễ theo llama_lag_days.,liquidity (proxy)
+supply,float64,USD,"Circulating supply tổng các chain, trễ llama_lag_days ngày, ffill tối đa llama_ffill_limit ngày.",DefiLlama,Giá trị gắn nhãn <= t - lag.,supply
+supply_ffilled,bool,-,True nếu supply hàng này là giá trị ffill.,Pipeline,-,
+supply_change,float64,tỷ lệ,supply_t / supply_{t-1} - 1. Proxy mint/burn ròng toàn chain.,Tính,Chỉ dùng t và t-1.,supply_change
+supply_eth,float64,USD,"Circulating supply của coin trên mạng Ethereum (DefiLlama, tách theo chain), trễ llama_lag_days ngày. Gồm cả phần chuyển qua cầu nối nên KHÔNG phải mint/burn thuần. NaN nếu coin không có trên Ethereum.",DefiLlama,Giá trị gắn nhãn <= t - lag.,proxy mint/burn
+supply_eth_change,float64,tỷ lệ,supply_eth_t / supply_eth_{t-1} - 1: proxy phát hành/hủy ròng trên Ethereum (thay cho mint_eth/burn_eth khi chưa có dữ liệu Dune).,Tính,Chỉ dùng t và t-1.,proxy mint/burn
+supply_eth_share,float64,tỷ lệ,supply_eth / supply: tỷ trọng nguồn cung nằm trên Ethereum. Đổi đột ngột = dịch chuyển giữa các chain hoặc phát hành/hủy lớn trên Ethereum.,Tính,Cùng độ trễ với supply.,proxy
+tvl,float64,USD,"TVL toàn thị trường DeFi (tổng chain). Biến cấp thị trường, giống nhau giữa các coin.",DefiLlama,Trễ llama_lag_days ngày.,
+tvl_change,float64,tỷ lệ,tvl_t / tvl_{t-1} - 1.,Tính,Chỉ dùng t và t-1.,tvl_change
+btc_ret,float64,log,Log-return ngày của BTC-USD.,Yahoo Finance,Close ngày t.,
+btc_vol,float64,log-return std,"Độ lệch chuẩn log-return BTC trượt vol_window ngày (mặc định 7), chỉ dùng t-6..t.",Tính,Cửa sổ lùi.,btc_vol
+eth_ret,float64,log,Log-return ngày của ETH-USD (đại diện cú sốc tài sản thế chấp của DAI).,Yahoo Finance,Close ngày t.,
+eth_vol,float64,log-return std,Độ lệch chuẩn log-return ETH trượt vol_window ngày.,Tính,Cửa sổ lùi.,eth_vol
+dex_imbalance,float64,tỷ lệ,"Tỷ trọng coin trong Curve 3pool trừ 1/3 (dương = pool thừa coin đó, thường báo hiệu bị bán tháo). Chỉ có cho USDT/USDC/DAI. NaN nếu chưa có dữ liệu Curve/Dune. Lưu ý lệch CẤU TRÚC khi pool teo và một coin chiếm ưu thế kéo dài: nên dùng thay đổi hoặc độ lệch so với trung bình trượt.",API Curve (snapshot số dư pool) hoặc Dune (chuyển ròng),Số dư gắn nhãn <= t - curve_balances_lag_days (mặc định 1).,dex_imbalance
+dex_pool_size,float64,đơn vị coin (~USD),"Tổng số dư ba coin trong Curve 3pool. Dùng để đánh giá độ tin cậy của dex_imbalance: pool càng nhỏ, tỷ trọng càng nhiễu. NaN nếu chưa có dữ liệu Curve/Dune.",API Curve hoặc Dune,Cùng độ trễ với dex_imbalance.,
+mint_eth,float64,đơn vị coin,Lượng mint trên Ethereum trong ngày (Transfer từ địa chỉ 0x0). Không áp dụng USDT (dùng sự kiện Issue).,Dune,Cả ngày t.,
+burn_eth,float64,đơn vị coin,Lượng burn trên Ethereum trong ngày (Transfer tới 0x0).,Dune,Cả ngày t.,
+net_issuance_eth,float64,đơn vị coin,mint_eth - burn_eth (chỉ Ethereum; không đại diện toàn chain).,Tính,Cả ngày t.,
+onchain_available,bool,-,True nếu hàng có ít nhất một biến on-chain trực tiếp. False => chỉ có proxy DefiLlama.,Pipeline,-,
+price_src,string,-,"Nguồn của price/high/low hàng này: yahoo, cryptocompare, hoặc binance_usdt (chỉ coin bật binance_fallback; giá quy USDT nên lệch nhẹ so với USD).",Pipeline,-,
+hl_fixed,bool,-,True nếu high/low đã bị chỉnh vì mâu thuẫn với open/close.,Pipeline,-,
+is_missing_price,bool,-,"True nếu không có giá ngày đó ở cả hai nguồn (hàng được giữ để lưới ngày liên tục, các cột giá = NaN).",Pipeline,-,
+src_disagree,bool,-,True nếu |close Yahoo - close CryptoCompare| / close > 0.5%. Nên kiểm tra thủ công các ngày này.,Pipeline,-,
+cc_close,float64,USD,Giá đóng cửa CryptoCompare (đối chiếu).,CryptoCompare,-,
+bn_close,float64,USDT,"Giá đóng cửa Binance, quy về USDT chứ không phải USD (đối chiếu/robustness).",Binance,-,
+bn_high,float64,USDT,High Binance (USDT).,Binance,-,
+bn_low,float64,USDT,Low Binance (USDT).,Binance,-,
